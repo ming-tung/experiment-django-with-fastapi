@@ -1,0 +1,42 @@
+name: Continues Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+env:
+  PYTHON_VERSION: 3.9
+jobs:
+  run-test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Setup poetry
+        uses: Gr1N/setup-poetry@v7
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+      - run: |
+          poetry --version
+      - name: Install dependencies
+        run: |
+          poetry install
+      - name: Run isort
+        run: |
+          poetry run isort . --check
+      - name: Run black
+        run: |
+          poetry run black --check --diff .
+      - name: Run flake8
+        run: |
+          poetry run flake8 .
+      - name: Run pytest
+        run: |
+          poetry run pytest
