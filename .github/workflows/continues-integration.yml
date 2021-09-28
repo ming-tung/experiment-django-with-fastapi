@@ -37,6 +37,15 @@ jobs:
       - name: Run flake8
         run: |
           poetry run flake8 .
+      - name: Run postgresql
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '12'
+          postgresql password: password
+          postgresql user: username
       - name: Run pytest
+        env:
+          DATABASE_URL: psql://username:password@localhost:5432/experiment-django-with-fastapi
+          SECRET_KEY: somethingsomething
         run: |
           poetry run pytest
