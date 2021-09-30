@@ -27,4 +27,4 @@ def test_api_books(book):
     response = client.get("/api/books")
 
     assert response.status_code == 200
-    assert response.json()['items'] == [book]
+    assert response.json()['items'] == [{'title': 'asdf'}]
