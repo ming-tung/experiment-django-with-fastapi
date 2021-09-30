@@ -12,7 +12,7 @@ def book():
     return Book.objects.create(title='asdf')
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_api_book(book):
     response = client.get(f"/api/books/{book.id}")
 
@@ -20,11 +20,11 @@ def test_api_book(book):
     assert response.json() == {"title": book.title}
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_api_books(book):
     assert Book.objects.count() == 1
 
     response = client.get("/api/books")
 
     assert response.status_code == 200
-    assert response.json()['items'] == [book]
+    assert response.json()['items'] == [{'title': 'asdf'}]
