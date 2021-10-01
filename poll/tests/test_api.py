@@ -13,18 +13,29 @@ def book():
 
 
 @pytest.mark.django_db(transaction=True)
-def test_api_book(book):
-    response = client.get(f"/api/books/{book.id}")
+class TestBookAPI:
+    def test_api_book(self, book):
+        response = client.get(f"/api/books/{book.id}")
 
-    assert response.status_code == 200
-    assert response.json() == {"title": book.title}
+        assert response.status_code == 200
+        assert response.json() == {
+            'title': 'asdf',
+            'uuid': str(book.uuid),
+            'created_at': book.created_at.isoformat(),
+            'updated_at': book.updated_at.isoformat(),
+        }
 
+    def test_api_books(self, book):
+        assert Book.objects.count() == 1
 
-@pytest.mark.django_db(transaction=True)
-def test_api_books(book):
-    assert Book.objects.count() == 1
+        response = client.get("/api/books")
 
-    response = client.get("/api/books")
-
-    assert response.status_code == 200
-    assert response.json()['items'] == [{'title': 'asdf'}]
+        assert response.status_code == 200
+        assert response.json()['items'] == [
+            {
+                'title': 'asdf',
+                'uuid': str(book.uuid),
+                'created_at': book.created_at.isoformat(),
+                'updated_at': book.updated_at.isoformat(),
+            }
+        ]
