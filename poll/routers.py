@@ -23,7 +23,7 @@ def get_book(
     return BookSchema.from_orm(book)
 
 
-@books_router.post("/", response_model=BookSchema)
+@books_router.post("/", status_code=201, response_model=BookSchema)
 def post_book(
     book: _BookSchema,
 ) -> BookSchema:

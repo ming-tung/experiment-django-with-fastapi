@@ -48,7 +48,7 @@ class TestBookAPI:
             json={'title': 'qwer'},
         )
 
-        assert response.status_code == 200
+        assert response.status_code == 201
         book = Book.objects.get(title='qwer')
         assert response.json() == {
             'title': 'qwer',
