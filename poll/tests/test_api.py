@@ -14,8 +14,10 @@ def book():
 
 @pytest.mark.django_db(transaction=True)
 class TestBookAPI:
-    def test_api_book(self, book):
-        response = client.get(f"/api/books/{book.id}")
+    url = '/api/books/'
+
+    def test_get_book(self, book):
+        response = client.get(f"{self.url}{book.id}")
 
         assert response.status_code == 200
         assert response.json() == {
@@ -25,10 +27,10 @@ class TestBookAPI:
             'updated_at': book.updated_at.isoformat(),
         }
 
-    def test_api_books(self, book):
+    def test_get_books(self, book):
         assert Book.objects.count() == 1
 
-        response = client.get("/api/books")
+        response = client.get(self.url)
 
         assert response.status_code == 200
         assert response.json()['items'] == [
@@ -39,3 +41,18 @@ class TestBookAPI:
                 'updated_at': book.updated_at.isoformat(),
             }
         ]
+
+    def test_post_book(self):
+        response = client.post(
+            self.url,
+            json={'title': 'qwer'},
+        )
+
+        assert response.status_code == 200
+        book = Book.objects.get(title='qwer')
+        assert response.json() == {
+            'title': 'qwer',
+            'uuid': str(book.uuid),
+            'created_at': book.created_at.isoformat(),
+            'updated_at': book.updated_at.isoformat(),
+        }

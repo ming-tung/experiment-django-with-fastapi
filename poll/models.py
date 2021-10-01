@@ -7,6 +7,8 @@ from django_extensions.db.fields import (
     ModificationDateTimeField,
 )
 
+from poll.schemas import _BookSchema
+
 
 class BaseModelMixin(models.Model):
     uuid = models.UUIDField(
@@ -22,4 +24,8 @@ class BaseModelMixin(models.Model):
 
 
 class Book(BaseModelMixin, models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, unique=True)
+
+    @classmethod
+    def from_api(cls, book: _BookSchema):
+        return cls(title=book.title)
