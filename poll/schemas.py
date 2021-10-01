@@ -3,10 +3,10 @@ from datetime import datetime
 from typing import List
 
 from django.db import models
-from pydantic import BaseModel as BaseModel_
+from pydantic import BaseModel
 
 
-class BaseSchema(BaseModel_):
+class BaseSchema(BaseModel):
     # The fields from `models.BaseModelMixin`
 
     uuid: uuid.UUID
@@ -18,7 +18,7 @@ class BaseSchema(BaseModel_):
         return [cls.from_orm(obj) for obj in queryset]
 
 
-class _BookSchema(BaseModel_):
+class _BookSchema(BaseModel):
 
     title: str
 
@@ -28,7 +28,7 @@ class BookSchema(_BookSchema, BaseSchema):
         orm_mode = True
 
 
-class BooksSchema(BaseModel_):
+class BooksSchema(BaseModel):
     items: List[BookSchema]
 
     @classmethod
