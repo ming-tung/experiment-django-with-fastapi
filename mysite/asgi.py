@@ -9,12 +9,12 @@ https://docs.djangoproject.com/en/3.2/howto/deployment/asgi/
 
 import os
 
-from django.core.asgi import get_asgi_application
+import django
 from fastapi import FastAPI
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 
-application = get_asgi_application()
+django.setup(set_prefix=False)
 
 from poll.routers import books_router  # noqa: E402
 
