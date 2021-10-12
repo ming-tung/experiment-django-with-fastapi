@@ -3,7 +3,7 @@ Tryout django orm and fastapi for API
 
 - run FastAPI
     ```commandline
-    poetry run uvicorn mysite.asgi:fastapp --port 8001 --reload
+    poetry run uvicorn mysite.asgi:application --port 8001 --reload
     ```
   
 - run django for convenience
