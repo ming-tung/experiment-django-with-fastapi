@@ -1,10 +1,10 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from mysite.asgi import fastapp
+from mysite.asgi import application
 from poll.models import Book
 
-client = TestClient(fastapp)
+client = TestClient(application)
 
 
 @pytest.fixture

@@ -18,5 +18,5 @@ django.setup(set_prefix=False)
 
 from poll.routers import books_router  # noqa: E402
 
-fastapp = FastAPI()
-fastapp.include_router(books_router, tags=["books"], prefix="/api/books")
+application = FastAPI()
+application.include_router(books_router, tags=["books"], prefix="/api/books")
